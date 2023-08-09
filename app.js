@@ -9,6 +9,8 @@ const mongoose = require("mongoose");
 const contactsRouter = require("./routes/api/contacts");
 const authRouter = require("./routes/api/users");
 
+const tasksRouter = require("./routes/api/tasks")
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -36,6 +38,7 @@ app.listen(3001);
 
 app.use("/users", authRouter);
 app.use("/api/contacts", contactsRouter);
+app.use("/tasks",tasksRouter)
 
 app.use(async (req, res) => {
   const { method, url } = req;
