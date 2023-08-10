@@ -9,24 +9,29 @@ const taskSchema = Schema({
     },
   start: {
     type: String,
+    validate: {
+      validator: function (v) {
+       const pattern = /^([01]\d|2[0-3]):([0-5]\d)$/
+       return pattern.test(v)
+          // return v.length > 3
+      },
+      message: 'Your time is invalid'
+  }, 
     // validate: {
-    //   isAsync: true,
-    //   validator: function(v, cb) {
-    //     setTimeout(function() {
-    //       var timeRegex = /^(?:2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/;
-    //       var msg = v + ' is not a valid time format!';
-
-    //       cb(timeRegex.test(v), msg);
-    //     }, 5);
+    //   validator: function(v) {
+    //     return ^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$.test(v);
     //   },
-
-    //   message: 'Default error message'
+    //   message: props => `${props.value} is not a valid phone number!`
     // },
-    required: [true, "Start time is required"],
+    // required: function () { return this.end },
+    // required: this.start < this.end,
+    //  match: ^(?:[01][0-9]|2[0-3])[-:h][0-5][0-9]$,
+  //   required: [true, "Start time is required"],
   },
   end: {
     type: String,
-    required: [true, "End time is required"],
+    // required: [true, "End time is required"],
+    required: this.end > this.start,
   },
 //   favorite: {
 //     type: String,
@@ -50,11 +55,11 @@ const taskSchema = Schema({
     enum: ["to-do", "in-progress", "done"],
     required: [true, "Category is required"],
   },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-    required:true,
-  },
+  // owner: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'user',
+  //   required:true,
+  // },
 },{
   versionKey: false,
 });
@@ -77,20 +82,19 @@ const postCheckingSchema = Joi.object({
   end: Joi.string()
     .required()
     .error(new Error("missing required phone field")),
-  favorite: Joi.String()
-    .required()
-    .error(new Error("missing required favorite field")),
+  // favorite: Joi.String()
+  //   .required()
+  //   .error(new Error("missing required favorite field")),
 });
 
 const putCheckingSchema = Joi.object({
   title: Joi.string().max(250).required(),
   start: Joi.string().email(),
   end: Joi.string(),
-  favorite: Joi.String(),
 }).min(1);
 
 const patchCheckingSchema = Joi.object({
-  favorite: Joi.String().required(),
+  // favorite: Joi.String().required(),
 });
 
 const Task = model("task", taskSchema);
@@ -102,3 +106,18 @@ module.exports = { Task, taskSchemas };
 // regex = ^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$
 
 // { name: { $in: [ /^acme/i, /^ack/ ] } }
+
+
+// validate: {
+//   isAsync: true,
+//   validator: function(v, cb) {
+//     setTimeout(function() {
+//       const timeRegex = /^(?:2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/;
+//       const msg = v + ' is not a valid time format!';
+
+//       cb(timeRegex.test(v), msg);
+//     }, 5);
+//   },
+
+//   message: 'Default error message'
+// },

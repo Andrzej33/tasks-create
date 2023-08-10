@@ -6,8 +6,8 @@ const mongoose = require("mongoose");
 
 
 
-const contactsRouter = require("./routes/api/contacts");
-const authRouter = require("./routes/api/users");
+// const contactsRouter = require("./routes/api/contacts");
+// const authRouter = require("./routes/api/users");
 
 const tasksRouter = require("./routes/api/tasks")
 
@@ -22,8 +22,10 @@ app.use(express.static("public"))
 
 // const DB_URI ='mongodb+srv://Andy:YE4F750DUfI18hoz@cluster0.5mjlhcp.mongodb.net/'
 
+const DB_HOST = 'mongodb+srv://Andy:YE4F750DUfI18hoz@cluster0.5mjlhcp.mongodb.net/tasks?retryWrites=true&w=majority'
+// const { DB_HOST } = process.env;
 
-const { DB_HOST } = process.env;
+
 
 mongoose
   .connect(DB_HOST)
@@ -35,9 +37,11 @@ mongoose
 
 app.listen(3001);
 
-app.use("/users", authRouter);
-app.use("/api/contacts", contactsRouter);
-app.use("/tasks",tasksRouter)
+
+// app.use("/users", authRouter);
+app.use("/api/tasks",tasksRouter)
+// app.use("/api/contacts", contactsRouter);
+
 
 app.use(async (req, res) => {
   const { method, url } = req;

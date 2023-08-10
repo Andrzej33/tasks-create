@@ -4,10 +4,11 @@ const { RequestError } = require("../helpers");
 
 const getAll = async (req, res, next) => {
   try {
-    const { _id: owner } = req.user;
-    const { page = 1, limit = 20 } = req.query;
-    const skip = (page - 1) * limit;
-    const result = await Task.find({ owner }, null, { skip, limit });
+    // const { _id: owner } = req.user;
+    // const { page = 1, limit = 20 } = req.query;
+    // const skip = (page - 1) * limit;
+    // const result = await Task.find({ owner }, null, { skip, limit });
+    const result = await Task.find({});
     res.json(result);
   } catch (error) {
     next(error);
@@ -29,14 +30,16 @@ const getAll = async (req, res, next) => {
 
 const add = async (req, res, next) => {
   try {
-    const { error } = taskSchemas.postCheckingSchema.validate(req.body);
+    // const { error } = taskSchemas.postCheckingSchema.validate(req.body);
 
-    if (error) {
-      throw RequestError(400, error.message);
-    }
-    const { _id: owner } = req.user;
+    // if (error) {
+    //   throw RequestError(400, error.message);
+    // }
+    // const { _id: owner } = req.user;
 
-    const result = await Task.create({ ...req.body, owner });
+    const result = await Task.create({ ...req.body
+      // , owner
+     });
 
     res.status(201).json(result);
   } catch (error) {
