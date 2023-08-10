@@ -20,8 +20,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static("public"))
 
-
-
+// const DB_URI ='mongodb+srv://Andy:YE4F750DUfI18hoz@cluster0.5mjlhcp.mongodb.net/'
 
 
 const { DB_HOST } = process.env;
